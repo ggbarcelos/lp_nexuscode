@@ -37,3 +37,7 @@ Sora em títulos, Manrope em leitura e IBM Plex Mono em metadados. Neutros carbo
 ## Prova em campo — refinamento 03
 
 Vitrine interativa com desafio, entrega, impacto e origem dos doze projetos. Cada case possui uma apresentação própria: indicador circular de automação, fluxo de OCR, escala de produto ou imagem real da aplicação. Seleção rápida de quatro cases, catálogo compacto por especialidade, detalhes e fontes em diálogo. A troca leva o foco ao título do case e respeita movimento reduzido. Gráficos representam apenas indicadores publicados, sem séries ou resultados inventados. Layout revisado para desktop, tablet e celular.
+
+## Banners sociais e prévia de links
+
+Artes horizontais 1200×630 e 1200×627, mais uma composição quadrada 1080×1080, em `dist/assets/social/`. Mestres e direção criativa em `creative/social/`. O head possui metadados Open Graph completos com imagem absoluta e cartão grande. A prévia continua privada; as redes precisam de página e imagem públicas para gerar cartões de links. Consulte `creative/social/README.md` para formatos, fontes e migração de URLs.
