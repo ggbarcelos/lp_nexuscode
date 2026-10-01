@@ -1,6 +1,6 @@
 # NexusCode — IA, engenharia e visão de negócio
 
-Landing page estática da parceria de Ricardo Grossi e Glauber Barcelos. Código em `dist/`, sem dependências de runtime ou etapa de build. Para abrir localmente: `python3 -m http.server 4173 --directory dist`.
+Landing page estática da parceria de Ricardo Grossi e Glauber Barcelos. O `index.html`, os arquivos CSS/JavaScript e a pasta `assets/` ficam na raiz do repositório, sem dependências de runtime. Para abrir localmente a partir de `lp_nexuscode`: `python3 -m http.server 4173`.
 
 ## Direção e conteúdo
 
@@ -24,7 +24,7 @@ Código versionado em https://github.com/ggbarcelos/lp_nexuscode.git. O remoto `
 
 ## Hospedagem e domínio
 
-`.openai/hosting.json` aponta para a saída estática `dist`. A versão é disponibilizada em acesso privado para avaliação. O domínio comercial `nexuscode.app.br` não é alterado por este projeto. Para hospedar em outro servidor estático, basta copiar o conteúdo de `dist` e manter os caminhos relativos.
+O site pode ser servido diretamente da raiz, que contém `index.html`. Para publicação no Sites, `node scripts/build-site.mjs` gera uma cópia em `dist/`, ignorada pelo Git, e `.openai/hosting.json` aponta para essa saída exigida pela hospedagem. A versão é disponibilizada em acesso privado para avaliação. O domínio comercial `nexuscode.app.br` não é alterado por este projeto. Para hospedar em outro servidor estático, basta copiar `index.html`, os arquivos CSS/JavaScript da raiz e a pasta `assets/`, mantendo os caminhos relativos.
 
 ## Acessibilidade e comportamento
 
@@ -40,4 +40,15 @@ Vitrine interativa com desafio, entrega, impacto e origem dos doze projetos. Cad
 
 ## Banners sociais e prévia de links
 
-Artes horizontais 1200×630 e 1200×627, mais uma composição quadrada 1080×1080, em `dist/assets/social/`. Mestres e direção criativa em `creative/social/`. O head possui metadados Open Graph completos com imagem absoluta e cartão grande. A prévia continua privada; as redes precisam de página e imagem públicas para gerar cartões de links. Consulte `creative/social/README.md` para formatos, fontes e migração de URLs.
+Artes horizontais 1200×630 e 1200×627, mais uma composição quadrada 1080×1080, em `assets/social/`. Mestres e direção criativa em `creative/social/`. O head possui metadados Open Graph completos com imagem absoluta e cartão grande. A prévia continua privada; as redes precisam de página e imagem públicas para gerar cartões de links. Consulte `creative/social/README.md` para formatos, fontes e migração de URLs.
+
+## Organização do projeto
+
+- `index.html` — página principal na raiz.
+- `app.js` e arquivos `.css` — comportamento e apresentação.
+- `assets/` — imagens, fontes e banners sociais.
+- `creative/` — mestres dos banners, orientações e prévias locais.
+- `scripts/build-site.mjs` — prepara a saída temporária exigida pelo Sites.
+- `.openai/hosting.json` — configuração da hospedagem.
+
+O repositório Git também fica em `lp_nexuscode`; as pastas intermediárias `nexuscode/` e `dist/` deixaram de fazer parte da estrutura versionada da página.
