@@ -59,3 +59,15 @@ O repositório Git também fica em `lp_nexuscode`; as pastas intermediárias `ne
 ## Compartilhamento no domínio comercial
 
 Facebook, LinkedIn e WhatsApp podem usar o mesmo banner horizontal 1200×630 em `og:image`. O domínio escolhido é `https://www.nexuscode.app.br/`; a versão 1200×627 permanece disponível para anexação manual no LinkedIn. O compartilhamento automático requer publicar o `index.html` atualizado e `assets/social/nexuscode-share-v1.jpg` nessa hospedagem, sem autenticação. Nenhum dado precisa ser enviado a serviços de validação externos.
+
+## IA em ação e depoimentos — atualização 04
+
+A referência futurista foi novamente examinada em https://www.nexuscode.app.br/ em 01/10/2026: fundo carbono, linhas de energia laranja, molduras técnicas e conversa progressiva de qualificação. A nova seção usa esse clima dentro da direção visual existente e mostra dois cenários ilustrativos: atendimento comercial e processamento de documentos. As mensagens digitadas acompanham etapas de qualificação, organização e encaminhamento, ou leitura, validação e registro. Possui pausa, retomada, replay, transcrição acessível, suspensão fora da área visível e respeito a movimento reduzido. Não se conecta a um modelo de IA, não recebe dados nem simula atendimento real ao visitante.
+
+Depoimentos: trechos reais publicados em https://www.nexuscode.app.br/#depoimentos de Gustavo Imperatori (Sócio-Diretor · GSIX Engenharia), Maite (Fundadora · RevendeBem) e Max Antunes (Sócio-Diretor · Amaré), acompanhados dos retratos do site original. O texto contextual explica que são experiências anteriores da trajetória de Ricardo e da NexusCode, sem atribuir retrospectivamente essas relações à nova parceria. As descrições abaixo das citações são resumos editoriais; não são falas adicionais dos autores. Não há notas de avaliação ou depoimentos inventados.
+
+Retratos originais: /brand/testimonials/gustavo.webp, /brand/testimonials/maite.jpg e /brand/testimonials/max-antunes.jpg, copiados de https://www.nexuscode.app.br/ para assets/images/testimonials/.
+
+### Navegação dos cases
+
+Galeria única com os 12 projetos e filtros por especialidade com contagem. Cada card abre um diálogo com desafio, entrega, impacto, imagem ou gráfico e fonte. Anterior/próximo percorrem apenas os projetos do filtro ativo. Fechar (ou Escape) preserva a posição na galeria e devolve o foco ao card; não há saltos para outra seção nem seleção duplicada.

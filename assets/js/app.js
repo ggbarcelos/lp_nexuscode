@@ -55,9 +55,11 @@ const caseStories = {
  banana: {headline:'Startups e investidores. Uma conexão com critérios.',challenge:'Aproximar descoberta, critérios de avaliação e conexão em um produto inicial.',delivery:'MVP com matching inteligente e uma experiência voltada à descoberta de oportunidades.',impact:'Matching entre startups & investidores',secondary:'Da hipótese ao MVP',proof:'Projeto apresentado no portfólio de Glauber.',visual:'web'},
  empreender: {headline:'A experiência do evento começa antes do palco.',challenge:'Reunir proposta, palestrantes e programação em uma jornada de evento clara.',delivery:'Landing page do Summit com conteúdo organizado e acesso à venda de ingressos.',impact:'Conteúdo & jornada de ingressos',secondary:'Summit Empreender 40+',proof:'Projeto apresentado no portfólio de Glauber.',visual:'web'}
 };
-let activeFilter = 'all'; let expanded = false; let selectedCase = 'gsix';
+let activeFilter = 'all';
 const grid = document.querySelector('#case-grid');
-const moreButton = document.querySelector('#case-more');
+const dialog = document.querySelector('#case-dialog');
+let dialogProjects = [], dialogIndex = 0, lastCaseButton;
+const filterNames = {all:'Todos os projetos',ia:'IA & automação',saas:'SaaS',mobile:'Mobile',web:'Web & conversão'};
 function caseVisual(p, story) {
  if(story.visual==='mobile') return `<div class="study-visual study-mobile ${p.id==='unimed'?'study-unimed':''}"><div class="study-visual-caption"><span>EXPERIÊNCIA MOBILE</span><span>PROJETO REAL</span></div><img class="study-app" src="assets/images/${p.image}" alt="Interface do aplicativo ${p.name}" width="400" height="560" loading="lazy"><div class="study-mobile-note"><span aria-hidden="true">◎</span><div>${p.id==='samu'?'Localização & tempo real':'Cobertura & serviços'}<small>${p.id==='samu'?'Contexto para quem precisa agir':'Informação na jornada do beneficiário'}</small></div></div><div class="study-visual-foot"><span>SAÚDE / ENGENHARIA MOBILE</span><span>.NET MAUI</span></div></div>`;
  if(story.visual==='web') return `<div class="study-visual study-web"><div class="study-visual-caption"><span>${p.id==='banana'?'EXPERIÊNCIA DE PRODUTO':'JORNADA DIGITAL'}</span><span>PROJETO REAL</span></div><div class="study-browser"><div class="study-browser-bar" aria-hidden="true"><i></i><i></i><i></i><span>${p.name}</span></div><img src="assets/images/${p.image}" alt="Imagem do projeto ${p.name}" width="600" height="500" loading="lazy"></div><div class="study-visual-foot"><span>${p.id==='banana'?'PRODUTO / MATCHING':'DESIGN / CONVERSÃO'}</span><span>WEB</span></div></div>`;
@@ -65,35 +67,48 @@ function caseVisual(p, story) {
  if(story.visual==='automation') {const value=p.id==='gsix'?95:80;const circumference=2*Math.PI*102;return `<div class="study-visual study-automation"><div class="study-visual-caption"><span>CAPACIDADE AMPLIADA COM IA</span><span>${p.id==='gsix'?'ENGENHARIA':'CONSULTORIA'}</span></div><div class="study-gauge"><svg viewBox="0 0 250 250" role="img" aria-label="${value}% de automação reportada"><circle class="gauge-track" cx="125" cy="125" r="102"/><circle class="gauge-value" cx="125" cy="125" r="102" stroke-dasharray="${circumference*value/100} ${circumference*(100-value)/100}"/><circle class="gauge-guide" cx="125" cy="125" r="119"/></svg><div><strong>${value}<small>%</small></strong><span>AUTOMATIZADO</span></div></div><p class="study-gauge-caption">${p.id==='gsix'?'da elaboração técnica':'das atividades repetitivas'}</p><div class="study-evidence"><strong>${p.id==='gsix'?'6.000+':'OAuth + IA'}</strong><span>${p.id==='gsix'?'projetos processados':'dados do Mercado Livre conectados'}</span></div><div class="study-visual-foot"><span>INDICADOR DO CASE</span><span>${p.id==='gsix'?'GSIX':'ASAP'}</span></div></div>`;}
  return `<div class="study-visual study-scale"><div class="study-visual-caption"><span>${p.id==='aros'?'INTELIGÊNCIA QUE SUSTENTA ESCALA':'AUTOMAÇÃO COMERCIAL'}</span><span>${p.id==='aros'?'SAAS / IA':'ENERGIA SOLAR'}</span></div><div class="study-big-number">${p.metric}<small>${p.unit}</small></div><p class="study-number-caption">${p.id==='aros'?'usuários em menos de 12 meses':'leads qualificados por dia'}</p><div class="study-capabilities"><span>${p.id==='aros'?'Agentes de IA':'Qualificação'}</span><span>${p.id==='aros'?'Produto SaaS':'Pré-proposta'}</span><span>${p.id==='aros'?'Expansão internacional':'Agendamento'}</span></div><div class="study-visual-foot"><span>RESULTADO REPORTADO</span><span>${p.name}</span></div></div>`;
 }
-function renderShowcase() {
- const p=projects.find(p=>p.id===selectedCase);const story=caseStories[p.id];
- document.querySelector('#showcase-position').textContent=`CASE ${String(projects.indexOf(p)+1).padStart(2,'0')} / 12`;
- document.querySelector('#showcase-content').innerHTML=`<div class="study-layout"><div class="study-copy"><span class="study-sector">${p.sector}</span><h3 id="showcase-title" tabindex="-1">${p.name}</h3><p class="study-headline">${story.headline}</p><div class="study-story"><div><span>O DESAFIO</span><p>${story.challenge}</p></div><div><span>A ENTREGA</span><p>${story.delivery}</p></div></div><div class="study-impact"><span>O IMPACTO / A CAPACIDADE</span><strong>${story.impact}</strong><small>${story.secondary}</small></div><div class="study-actions"><button class="button button-outline" data-project="${p.id}" aria-label="Ver contexto do projeto ${p.name}">Conhecer o case <span aria-hidden="true">+</span></button><span>${p.tag}</span></div></div>${caseVisual(p,story)}</div><div class="study-credit"><span>${story.proof}</span><span>${p.origin}</span></div>`;
- document.querySelectorAll('[data-featured]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.featured===selectedCase)));
-}
-function chooseCase(id, scroll=false) {
- selectedCase=id;renderShowcase();grid.querySelectorAll('[data-case-select]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.caseSelect===id)));
- if(scroll){document.querySelector('#showcase-title').focus({preventScroll:true});document.querySelector('#case-showcase').scrollIntoView({behavior:reducedMotion.matches?'instant':'smooth',block:'start'});}
+function filteredProjects() {
+ return projects.filter(p => activeFilter === 'all' || p.categories.includes(activeFilter));
 }
 function renderCases() {
- const list = projects.filter(p => activeFilter === 'all' || p.categories.includes(activeFilter)); const shown = expanded ? list : list.slice(0,6);
+ const list = filteredProjects();
  grid.dataset.filter = activeFilter;
- grid.innerHTML = shown.map(p=>`<article class="portfolio-project"><button class="case-choice" data-case-select="${p.id}" aria-pressed="${selectedCase===p.id}" aria-label="Explorar projeto ${p.name}"><span class="case-thumbnail ${p.image?'image-thumb':'number-thumb'} ${p.orange?'orange-thumb':''}">${p.image?`<img src="assets/images/${p.image}" alt="" width="110" height="120" loading="lazy">`:`<strong>${p.metric}<small>${p.unit}</small></strong>`}</span><span class="case-choice-text"><span class="choice-sector">${p.sector.split(' / ')[0]}</span><strong>${p.name}</strong><span class="choice-result">${caseStories[p.id].impact}</span><span class="choice-origin">${p.origin}</span></span><span class="choice-plus" aria-hidden="true">+</span></button></article>`).join('');
- document.querySelector('.case-counter').textContent = `${shown.length} de ${list.length} projetos`;
- moreButton.hidden = list.length <= 6;
- moreButton.style.display = list.length <= 6 ? 'none' : 'flex';
- moreButton.innerHTML = expanded ? 'Mostrar seleção inicial <span>−</span>' : `Explorar todos os ${list.length} projetos <span>+</span>`;
+ grid.innerHTML = list.map(p => `<article class="portfolio-project"><button class="case-choice" data-case-open="${p.id}" aria-label="Ver case ${p.name}" aria-haspopup="dialog"><span class="case-preview ${p.image?'image-preview':'metric-preview'} ${p.orange?'orange-preview':''}">${p.image?`<img src="assets/images/${p.image}" alt="" width="600" height="300" loading="lazy">`:`<span class="case-preview-number">${p.metric}<small>${p.unit}</small></span><span class="case-preview-caption">${p.caption}</span>`}<span class="case-preview-kind">${p.tag.split(' · ')[0]}</span></span><span class="case-choice-text"><span class="choice-sector">${p.sector.split(' / ')[0]}</span><strong>${p.name}</strong><span class="choice-result">${caseStories[p.id].impact}</span><span class="choice-origin">${p.origin}</span><span class="choice-open">Ver case <span aria-hidden="true">↗</span></span></span></button></article>`).join('');
+ document.querySelector('.case-counter').textContent = `${list.length} ${list.length===1?'projeto':'projetos'}${activeFilter==='all'?'':` em ${filterNames[activeFilter]}`}`;
 }
-document.querySelectorAll('[data-filter]').forEach(b => b.addEventListener('click', () => { activeFilter = b.dataset.filter; expanded = false; document.querySelectorAll('[data-filter]').forEach(f=> {f.classList.toggle('active',f===b); f.setAttribute('aria-pressed',String(f===b));}); renderCases(); }));
-moreButton.addEventListener('click', () => { expanded = !expanded; renderCases(); if (!expanded) document.querySelector('.portfolio-heading').scrollIntoView({behavior:reducedMotion.matches?'instant':'smooth',block:'start'}); });
-renderCases();renderShowcase();
-document.querySelectorAll('[data-featured]').forEach(b=>b.addEventListener('click',()=>chooseCase(b.dataset.featured,true)));
-grid.addEventListener('click',e=>{const button=e.target.closest('[data-case-select]');if(button)chooseCase(button.dataset.caseSelect,true);});
-const dialog = document.querySelector('#case-dialog'); let lastCaseButton;
-document.querySelector('#case-showcase').addEventListener('click', e => { const button = e.target.closest('[data-project]'); if (!button) return; lastCaseButton = button; const p = projects.find(p=>p.id===button.dataset.project); document.querySelector('#dialog-content').innerHTML = `<h2 class="dialog-title" id="case-dialog-title">${p.name}</h2><p class="dialog-subtitle">${p.sector}</p><p class="dialog-body">${p.body}</p>${p.image ? `<img class="dialog-image" src="assets/images/${p.image}" alt="Projeto ${p.name}" width="600" height="400">` : ''}<p class="dialog-credit">${p.credit}</p><a class="dialog-source" href="${p.source}" target="_blank" rel="noopener noreferrer">Ver projeto ou portfólio de origem</a>`; dialog.showModal(); });
+document.querySelectorAll('.case-filters button[data-filter]').forEach(button => {
+ button.setAttribute('aria-controls','case-grid');
+ button.querySelector('span').textContent = projects.filter(p => button.dataset.filter === 'all' || p.categories.includes(button.dataset.filter)).length;
+ button.addEventListener('click', () => {
+  activeFilter = button.dataset.filter;
+  document.querySelectorAll('.case-filters button[data-filter]').forEach(f => {f.classList.toggle('active',f===button);f.setAttribute('aria-pressed',String(f===button));});
+  renderCases();
+ });
+});
+function renderCaseDialog() {
+ const p = dialogProjects[dialogIndex], story = caseStories[p.id];
+ document.querySelector('#case-dialog-position').textContent = `CASE ${String(dialogIndex+1).padStart(2,'0')} / ${String(dialogProjects.length).padStart(2,'0')}`;
+ document.querySelector('#case-dialog-category').textContent = filterNames[activeFilter];
+ document.querySelector('#dialog-content').innerHTML = `<div class="study-layout"><div class="study-copy"><span class="study-sector">${p.sector}</span><h2 id="case-dialog-title" tabindex="-1">${p.name}</h2><p class="study-headline">${story.headline}</p><div class="study-story"><div><span>O DESAFIO</span><p>${story.challenge}</p></div><div><span>A ENTREGA</span><p>${story.delivery}</p></div></div><div class="study-impact"><span>O IMPACTO / A CAPACIDADE</span><strong>${story.impact}</strong><small>${story.secondary}</small></div><p class="case-detail-tag">${p.tag}</p><a class="text-link" href="#contato" data-case-contact>Quero uma solução como essa <span aria-hidden="true">↗</span></a></div>${caseVisual(p,story)}</div><div class="case-detail-source"><p>${p.credit}</p><a href="${p.source}" target="_blank" rel="noopener noreferrer">Ver fonte do projeto <span aria-hidden="true">↗</span></a></div>`;
+ document.querySelector('#case-previous').disabled = dialogIndex === 0;
+ document.querySelector('#case-next').disabled = dialogIndex === dialogProjects.length-1;
+ dialog.scrollTop = 0;
+ document.querySelector('#case-dialog-title').focus({preventScroll:true});
+}
+grid.addEventListener('click', e => {
+ const button=e.target.closest('[data-case-open]');if(!button)return;
+ lastCaseButton=button;dialogProjects=filteredProjects();dialogIndex=dialogProjects.findIndex(p=>p.id===button.dataset.caseOpen);
+ dialog.showModal();document.body.classList.add('case-modal-open');renderCaseDialog();
+});
+document.querySelector('#case-previous').addEventListener('click',()=>{if(dialogIndex>0){dialogIndex--;renderCaseDialog();}});
+document.querySelector('#case-next').addEventListener('click',()=>{if(dialogIndex<dialogProjects.length-1){dialogIndex++;renderCaseDialog();}});
 document.querySelector('#dialog-close').addEventListener('click',()=>dialog.close());
-dialog.addEventListener('click', e=> { if (e.target === dialog) { const r=dialog.getBoundingClientRect(); if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom) dialog.close(); } });
-dialog.addEventListener('close', ()=> lastCaseButton?.focus());
+dialog.addEventListener('click', e => {
+ if(e.target.closest('[data-case-contact]'))dialog.close();
+ if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}
+});
+dialog.addEventListener('close',()=>{document.body.classList.remove('case-modal-open');lastCaseButton?.focus({preventScroll:true});});
+renderCases();
 
 document.querySelector('#brief-form').addEventListener('submit', e => {
  e.preventDefault(); const form=e.currentTarget; if(!form.reportValidity()) return;
