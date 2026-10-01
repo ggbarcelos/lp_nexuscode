@@ -1,6 +1,6 @@
 # NexusCode — IA, engenharia e visão de negócio
 
-Landing page estática da parceria de Ricardo Grossi e Glauber Barcelos. O `index.html`, os arquivos CSS/JavaScript e a pasta `assets/` ficam na raiz do repositório, sem dependências de runtime. Para abrir localmente a partir de `lp_nexuscode`: `python3 -m http.server 4173`.
+Landing page estática da parceria de Ricardo Grossi e Glauber Barcelos. O `index.html` fica na raiz do repositório; CSS, JavaScript, fontes e imagens ficam nos respectivos subdiretórios de `assets/`, sem dependências de runtime. Para abrir localmente a partir de `lp_nexuscode`: `python3 -m http.server 4173`.
 
 ## Direção e conteúdo
 
@@ -24,7 +24,7 @@ Código versionado em https://github.com/ggbarcelos/lp_nexuscode.git. O remoto `
 
 ## Hospedagem e domínio
 
-O site pode ser servido diretamente da raiz, que contém `index.html`. Para publicação no Sites, `node scripts/build-site.mjs` gera uma cópia em `dist/`, ignorada pelo Git, e `.openai/hosting.json` aponta para essa saída exigida pela hospedagem. A versão é disponibilizada em acesso privado para avaliação. O domínio comercial `nexuscode.app.br` não é alterado por este projeto. Para hospedar em outro servidor estático, basta copiar `index.html`, os arquivos CSS/JavaScript da raiz e a pasta `assets/`, mantendo os caminhos relativos.
+O site pode ser servido diretamente da raiz, que contém `index.html`. Para publicação no Sites, `node scripts/build-site.mjs` gera uma cópia em `dist/`, ignorada pelo Git, e `.openai/hosting.json` aponta para essa saída exigida pela hospedagem. A versão é disponibilizada em acesso privado para avaliação. O domínio comercial `nexuscode.app.br` não é alterado por este projeto. Para hospedar em outro servidor estático, basta copiar `index.html` e a pasta `assets/`, mantendo os caminhos relativos.
 
 ## Acessibilidade e comportamento
 
@@ -45,8 +45,11 @@ Artes horizontais 1200×630 e 1200×627, mais uma composição quadrada 1080×10
 ## Organização do projeto
 
 - `index.html` — página principal na raiz.
-- `app.js` e arquivos `.css` — comportamento e apresentação.
-- `assets/` — imagens, fontes e banners sociais.
+- `assets/css/` — estilos, incluindo as declarações de fontes.
+- `assets/js/` — JavaScript da página.
+- `assets/fonts/` — fontes locais e suas licenças.
+- `assets/images/` — logomarca, retratos e imagens de projetos.
+- `assets/social/` — banners sociais e orientações de uso.
 - `creative/` — mestres dos banners, orientações e prévias locais.
 - `scripts/build-site.mjs` — prepara a saída temporária exigida pelo Sites.
 - `.openai/hosting.json` — configuração da hospedagem.
