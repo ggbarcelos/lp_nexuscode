@@ -18,6 +18,10 @@ SAMU e Unimed mantêm o crédito a projetos realizados para a TRUE Tecnologia pa
 
 O formulário prepara uma mensagem revisável e abre o WhatsApp comercial de Glauber, +55 51 98012-0387, publicado em seu site. Não há envio automático, banco de dados, armazenamento local, analytics ou alegação de integração com um modelo de IA. O e-mail `contato@nexuscode.app.br` vem do site original. O site não replica a NexusAI sem acesso ao seu backend.
 
+## Repositório
+
+Código versionado em https://github.com/ggbarcelos/lp_nexuscode.git. O remoto `origin` aponta para o GitHub e `sites` mantém a conexão de publicação da prévia.
+
 ## Hospedagem e domínio
 
 `.openai/hosting.json` aponta para a saída estática `dist`. A versão é disponibilizada em acesso privado para avaliação. O domínio comercial `nexuscode.app.br` não é alterado por este projeto. Para hospedar em outro servidor estático, basta copiar o conteúdo de `dist` e manter os caminhos relativos.
@@ -29,3 +33,7 @@ Navegação mobile, foco visível, link de salto, abas com teclado, filtros com 
 ## Refinamento visual 02
 
 Sora em títulos, Manrope em leitura e IBM Plex Mono em metadados. Neutros carbono e porcelana com vermelhão da marca, contraste revisado, galeria assimétrica, gráfico real do indicador GSIX, superfícies de formulário, controle de pausa do visual, navegação com seção ativa e indicador discreto de leitura. Mantém o conteúdo, as fontes dos cases e o fluxo de contato.
+
+## Prova em campo — refinamento 03
+
+Vitrine interativa com desafio, entrega, impacto e origem dos doze projetos. Cada case possui uma apresentação própria: indicador circular de automação, fluxo de OCR, escala de produto ou imagem real da aplicação. Seleção rápida de quatro cases, catálogo compacto por especialidade, detalhes e fontes em diálogo. A troca leva o foco ao título do case e respeita movimento reduzido. Gráficos representam apenas indicadores publicados, sem séries ou resultados inventados. Layout revisado para desktop, tablet e celular.
