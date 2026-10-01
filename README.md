@@ -12,7 +12,7 @@ Fontes consultadas em 01/10/2026:
 - https://glauberbarcelos.com.br/ — retrato de Glauber, SaaS, mobile, web, arquitetura e consultoria; SAMU, Unimed, Native IP, StreetMe, Turquesa, Banana Startups e Empreender 40+.
 - https://www.linkedin.com/in/ricardo-grossi/ e https://www.linkedin.com/in/glauber-gomes-barcelos/ — links profissionais preservados. A extração direta do LinkedIn foi indisponível; biografias baseadas nos sites oficiais.
 
-SAMU e Unimed mantêm o crédito a projetos realizados para a TRUE Tecnologia para Vida. arOS preserva o crédito de participação de Ricardo. Os cases representam as trajetórias anteriores, sem sugerir contratação retroativa pela parceria. A meta de 3.000 clientes da ASAP é identificada como projeção. Indicadores provêm dos portfólios e não foram auditados independentemente. Os gráficos de barras são decorativos, sem série histórica ou novos indicadores.
+SAMU e Unimed mantêm o crédito a projetos realizados para a TRUE Tecnologia para Vida. arOS preserva o crédito de participação de Ricardo. Os cases representam as trajetórias anteriores, sem sugerir contratação retroativa pela parceria. A meta de 3.000 clientes da ASAP é identificada como projeção. Indicadores provêm dos portfólios e não foram auditados independentemente. O gráfico circular representa o indicador reportado de 95% da GSIX; não há série histórica inventada.
 
 ## Contato
 
@@ -24,4 +24,8 @@ O formulário prepara uma mensagem revisável e abre o WhatsApp comercial de Gla
 
 ## Acessibilidade e comportamento
 
-Navegação mobile, foco visível, link de salto, abas com teclado, filtros com estado acessível, diálogo nativo, validação do formulário, respeito a movimento reduzido e pausa da animação quando o hero ou a página não está visível. Sem bibliotecas externas de JavaScript; fontes Google com fallback local.
+Navegação mobile, foco visível, link de salto, abas com teclado, filtros com estado acessível, diálogo nativo, validação do formulário, respeito a movimento reduzido e pausa da animação quando o hero ou a página não está visível. Sem bibliotecas externas de JavaScript; fontes Sora, Manrope e IBM Plex Mono hospedadas localmente, com suas licenças OFL e fallback de sistema.
+
+## Refinamento visual 02
+
+Sora em títulos, Manrope em leitura e IBM Plex Mono em metadados. Neutros carbono e porcelana com vermelhão da marca, contraste revisado, galeria assimétrica, gráfico real do indicador GSIX, superfícies de formulário, controle de pausa do visual, navegação com seção ativa e indicador discreto de leitura. Mantém o conteúdo, as fontes dos cases e o fluxo de contato.

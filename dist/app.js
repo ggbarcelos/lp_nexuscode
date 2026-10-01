@@ -46,11 +46,13 @@ const grid = document.querySelector('#case-grid');
 const moreButton = document.querySelector('#case-more');
 function artwork(p) {
  if (p.image) return `<div class="case-art ${p.art}-art ${p.id === 'unimed' ? 'unimed-art' : ''}"><img src="assets/${p.image}" alt="${p.art === 'mobile' ? 'Interface do aplicativo' : 'Imagem do projeto'} ${p.name}" loading="lazy" width="400" height="560">${p.art === 'mobile' ? '<span class="art-side-label">MOBILE / ENGENHARIA</span>' : ''}<span class="case-origin">${p.origin}</span></div>`;
- return `<div class="case-art metric-art ${p.orange ? 'orange-art' : ''}"><span class="art-title">${p.name}</span><span class="art-metric">${p.metric}<small>${p.unit}</small></span><span class="art-caption">${p.caption}</span><div class="metric-bars" aria-hidden="true">${[15,23,28,42,50,58,71,79,87,95].map(h=>`<span style="--height:${h}%"></span>`).join('')}</div><span class="case-origin">${p.origin}</span></div>`;
+ const ring = p.id === 'gsix' ? '<svg class="metric-ring" viewBox="0 0 180 180" role="img" aria-label="95% de elaboração técnica automatizada, segundo o portfólio de origem"><circle cx="90" cy="90" r="68"/><circle cx="90" cy="90" r="68"/><circle cx="90" cy="90" r="82"/></svg>' : '';
+ return `<div class="case-art metric-art ${p.orange ? 'orange-art' : ''}"><span class="art-title">${p.name}</span><span class="art-metric">${p.metric}<small>${p.unit}</small></span><span class="art-caption">${p.caption}</span>${ring}<div class="metric-annotation"><span>RESULTADO REPORTADO</span><span>CASE / ${String(projects.indexOf(p)+1).padStart(2,'0')}</span></div><span class="case-origin">${p.origin}</span></div>`;
 }
 function renderCases() {
  const list = projects.filter(p => activeFilter === 'all' || p.categories.includes(activeFilter)); const shown = expanded ? list : list.slice(0,6);
- grid.innerHTML = shown.map(p => `<article class="case-card">${artwork(p)}<div class="case-body"><span class="case-sector">${p.sector}</span><h3>${p.name}</h3><p>${p.summary}</p><div class="case-bottom"><span>${p.tag}</span><button class="case-button" data-project="${p.id}" aria-label="Ver contexto do projeto ${p.name}">+</button></div></div></article>`).join('');
+ grid.dataset.filter = activeFilter;
+ grid.innerHTML = shown.map(p => `<article class="case-card">${artwork(p)}<div class="case-body"><span class="case-sector">${p.sector}</span><h3>${p.name}</h3><p>${p.summary}</p><div class="case-bottom"><span>${p.tag}</span><button class="case-button" data-project="${p.id}" aria-label="Ver contexto do projeto ${p.name}">Explorar case <b aria-hidden="true">+</b></button></div></div></article>`).join('');
  document.querySelector('.case-counter').textContent = `01—${String(shown.length).padStart(2,'0')} / ${String(list.length).padStart(2,'0')}`;
  moreButton.hidden = list.length <= 6;
  moreButton.style.display = list.length <= 6 ? 'none' : 'flex';
@@ -68,35 +70,51 @@ dialog.addEventListener('close', ()=> lastCaseButton?.focus());
 document.querySelector('#brief-form').addEventListener('submit', e => {
  e.preventDefault(); const form=e.currentTarget; if(!form.reportValidity()) return;
  const data=new FormData(form); const name=String(data.get('name')).trim(); const company=String(data.get('company')).trim(); const challenge=String(data.get('challenge')).trim();
- if(!name||!challenge) return;
+ const nameInput=form.elements.name; const challengeInput=form.elements.challenge;
+ nameInput.setCustomValidity(name ? '' : 'Informe seu nome para preparar a conversa.');
+ challengeInput.setCustomValidity(challenge ? '' : 'Descreva seu desafio para preparar a conversa.');
+ if(!form.reportValidity())return;
  const message=`Olá, equipe NexusCode! Sou ${name}${company ? ', da '+company : ''}.\n\nQuero conversar sobre: ${data.get('interest')}.\n\nMeu desafio:\n${challenge}`;
  document.querySelector('#message-preview').textContent=message;
  document.querySelector('#whatsapp-send').href=`https://wa.me/5551980120387?text=${encodeURIComponent(message)}`;
- const preview=document.querySelector('#contact-preview'); preview.hidden=false; preview.scrollIntoView({behavior:reducedMotion.matches?'instant':'smooth',block:'nearest'});
+ const preview=document.querySelector('#contact-preview'); preview.hidden=false; preview.focus({preventScroll:true}); preview.scrollIntoView({behavior:reducedMotion.matches?'instant':'smooth',block:'nearest'});
 });
+document.querySelectorAll('#name,#challenge').forEach(el=>el.addEventListener('input',()=>el.setCustomValidity('')));
 
 // Animated connection graph: three orbit families represent the complementary competencies.
 const canvas=document.querySelector('#nexus-canvas'); const ctx=canvas.getContext('2d');
 if(ctx) {
- let width=0,height=0,frame=0,raf,visible=true; let pointer={x:0,y:0};
+ let width=0,height=0,frame=0,raf,visible=true,userPaused=false; let pointer={x:0,y:0};
+ const motionToggle=document.querySelector('#motion-toggle');
+ function updateMotionControl(){motionToggle.disabled=reducedMotion.matches;motionToggle.setAttribute('aria-pressed',String(userPaused||reducedMotion.matches));motionToggle.setAttribute('aria-label',reducedMotion.matches?'Animação desativada pela preferência de movimento reduzido':userPaused?'Retomar animação':'Pausar animação');motionToggle.innerHTML=reducedMotion.matches?'Visual estático':userPaused?'<span aria-hidden="true">▷</span> Retomar visual':'<span aria-hidden="true">Ⅱ</span> Pausar visual';}
+ motionToggle.addEventListener('click',()=>{userPaused=!userPaused;updateMotionControl();start();});
+ updateMotionControl();
  const points=[];
  for(let ring=0;ring<34;ring++) for(let step=0;step<72;step++) { const theta=step/72*Math.PI*2; const phi=ring/34*Math.PI*2; const radius=1+.28*Math.cos(phi); points.push({x:radius*Math.cos(theta),y:.28*Math.sin(phi),z:radius*Math.sin(theta),ring,step}); }
  function resize(){ const r=canvas.getBoundingClientRect();width=r.width;height=r.height;const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=width*dpr;canvas.height=height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0); }
  function draw(){ctx.clearRect(0,0,width,height);const time=reducedMotion.matches?0:frame*.003;const scale=Math.min(width*.37,height*.34);const tilt=.67+pointer.y*.1;const turn=time+pointer.x*.08;const projected=[];
    for(const p of points){const x=p.x*Math.cos(turn)-p.z*Math.sin(turn);const z=p.x*Math.sin(turn)+p.z*Math.cos(turn);const y=p.y*Math.cos(tilt)-z*Math.sin(tilt);const depth=p.y*Math.sin(tilt)+z*Math.cos(tilt);const perspective=3.3/(3.3+depth);projected.push({x:width/2+x*scale*perspective,y:height/2+y*scale*perspective,depth,ring:p.ring,step:p.step});}
    projected.sort((a,b)=>b.depth-a.depth);
-   for(const p of projected){const alpha=Math.max(.09,Math.min(.8,.48-p.depth*.27));ctx.fillStyle=`rgba(241,90,53,${alpha})`;ctx.beginPath();ctx.arc(p.x,p.y,p.depth<0?1.1:.7,0,Math.PI*2);ctx.fill();}
+   for(const p of projected){const alpha=Math.max(.12,Math.min(.85,.52-p.depth*.27));ctx.fillStyle=`rgba(241,96,61,${alpha})`;ctx.beginPath();ctx.arc(p.x,p.y,p.depth<0?1.15:.75,0,Math.PI*2);ctx.fill();}
    // Orbit lines make the relationship between competencies visible.
-   for(let orbit=0;orbit<3;orbit++){ctx.beginPath();for(let i=0;i<=120;i++){const a=i/120*Math.PI*2;const rx=Math.cos(a)*scale*(1.28+orbit*.04),ry=Math.sin(a)*scale*.43;const rot=-.4+orbit*.47;const x=rx*Math.cos(rot)-ry*Math.sin(rot);const y=rx*Math.sin(rot)+ry*Math.cos(rot);i?ctx.lineTo(width/2+x,height/2+y):ctx.moveTo(width/2+x,height/2+y);}ctx.strokeStyle=orbit===1?'#f15a3545':'#5b604630';ctx.lineWidth=.65;ctx.stroke();const a=time*(.7+orbit*.2)+orbit*2.1;const rx=Math.cos(a)*scale*(1.28+orbit*.04),ry=Math.sin(a)*scale*.43,rot=-.4+orbit*.47;ctx.fillStyle='#f15a35';ctx.beginPath();ctx.arc(width/2+rx*Math.cos(rot)-ry*Math.sin(rot),height/2+rx*Math.sin(rot)+ry*Math.cos(rot),2.6,0,Math.PI*2);ctx.fill();}
-   frame++;if(visible&&!document.hidden&&!reducedMotion.matches)raf=requestAnimationFrame(draw);
+   for(let orbit=0;orbit<3;orbit++){ctx.beginPath();for(let i=0;i<=120;i++){const a=i/120*Math.PI*2;const rx=Math.cos(a)*scale*(1.28+orbit*.04),ry=Math.sin(a)*scale*.43;const rot=-.4+orbit*.47;const x=rx*Math.cos(rot)-ry*Math.sin(rot);const y=rx*Math.sin(rot)+ry*Math.cos(rot);i?ctx.lineTo(width/2+x,height/2+y):ctx.moveTo(width/2+x,height/2+y);}ctx.strokeStyle=orbit===1?'#f1603d60':'#8894ae40';ctx.lineWidth=.75;ctx.stroke();const a=time*(.7+orbit*.2)+orbit*2.1;const rx=Math.cos(a)*scale*(1.28+orbit*.04),ry=Math.sin(a)*scale*.43,rot=-.4+orbit*.47;ctx.fillStyle='#f1603d';ctx.beginPath();ctx.arc(width/2+rx*Math.cos(rot)-ry*Math.sin(rot),height/2+rx*Math.sin(rot)+ry*Math.cos(rot),2.6,0,Math.PI*2);ctx.fill();}
+   if(!userPaused)frame++;if(visible&&!document.hidden&&!reducedMotion.matches&&!userPaused)raf=requestAnimationFrame(draw);
  }
  function start(){cancelAnimationFrame(raf);draw();}
  new ResizeObserver(()=>{resize();start();}).observe(canvas);
  new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)start();else cancelAnimationFrame(raf);}).observe(canvas);
  document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelAnimationFrame(raf);else if(visible)start();});
- reducedMotion.addEventListener('change',start);
+ reducedMotion.addEventListener('change',()=>{updateMotionControl();start();});
  canvas.parentElement.addEventListener('pointermove',e=>{const r=canvas.getBoundingClientRect();pointer={x:(e.clientX-r.left)/r.width-.5,y:(e.clientY-r.top)/r.height-.5};});
  canvas.parentElement.addEventListener('pointerleave',()=>pointer={x:0,y:0});
  resize();start();
 }
 if('IntersectionObserver' in window && !reducedMotion.matches) { const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}}),{threshold:.07});document.querySelectorAll('.section-heading,.connection-layout,.difference-layout,.team-grid,.method-grid,.team-note').forEach(el=>{el.classList.add('reveal');observer.observe(el);}); }
+
+// Discreet orientation while reading a long page.
+const progress=document.querySelector('.reading-progress');
+let scrollScheduled=false;
+function updateProgress(){const total=document.documentElement.scrollHeight-innerHeight;progress.style.transform=`scaleX(${total>0?Math.min(1,scrollY/total):0})`;scrollScheduled=false;}
+window.addEventListener('scroll',()=>{if(!scrollScheduled){scrollScheduled=true;requestAnimationFrame(updateProgress);}},{passive:true});
+window.addEventListener('resize',updateProgress);updateProgress();
+if('IntersectionObserver' in window){const sectionObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(!entry.isIntersecting)return;navigation.querySelectorAll('a').forEach(a=>{const active=a.hash==='#'+entry.target.id;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});});},{rootMargin:'-15% 0px -60% 0px'});document.querySelectorAll('main > section').forEach(section=>sectionObserver.observe(section));}
