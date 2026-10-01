@@ -5,6 +5,9 @@ IA aplicada · Software · Visão de negócio.
 
 ## Arquivos finais
 
+- nexuscode-share-v1.jpg — banner universal 1200×630 usado automaticamente nos metadados do site https://www.nexuscode.app.br/. O nome versionado permite atualizar a imagem mantendo um URL diferente para evitar reaproveitar a arte antiga.
+
+
 - nexuscode-facebook-1200x630.jpg — compartilhamento de links no Facebook; imagem Open Graph principal da LP.
 - nexuscode-linkedin-1200x627.jpg — imagem customizada de post com URL no LinkedIn.
 - nexuscode-whatsapp-link-1200x630.jpg — arquivo horizontal para compartilhar com o link ou usar em prévias grandes.
@@ -16,7 +19,7 @@ Todas as exportações têm as dimensões exatas do nome, JPEG em sRGB e margens
 
 A LP contém og:title, og:description, og:type, og:url, og:site_name, og:locale e og:image com URL HTTPS absoluta, tipo, dimensões e texto alternativo; também fornece cartão grande compatível com Twitter/X. O padrão compartilhado é 1200×630, próximo da proporção 1,91:1 usada no LinkedIn. Para usar a versão exata do LinkedIn como imagem personalizada, anexe o respectivo JPEG.
 
-A hospedagem atual permanece privada. Robôs de redes sociais normalmente precisam ler tanto a página como a imagem sem login para gerar a prévia. A configuração está pronta, mas a geração automática não foi validada nessas redes e depende da publicação em endereço público. Ao migrar para nexuscode.app.br, atualize todas as URLs absolutas do head; não alteramos o site comercial existente.
+A hospedagem atual permanece privada. Robôs de redes sociais normalmente precisam ler tanto a página como a imagem sem login para gerar a prévia. A configuração está pronta, mas a geração automática não foi validada nessas redes e depende da publicação em endereço público. As URLs absolutas do head estão configuradas para https://www.nexuscode.app.br/, incluindo canonical, og:url, og:image e twitter:image. O banner universal é assets/social/nexuscode-share-v1.jpg. Para a prévia aparecer, publique a nova página e esse arquivo no domínio comercial, com acesso sem login. A publicação no Sites continua privada e não modifica a hospedagem do domínio comercial existente.
 
 ## Referências consultadas em 01/10/2026
 

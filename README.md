@@ -40,7 +40,7 @@ Vitrine interativa com desafio, entrega, impacto e origem dos doze projetos. Cad
 
 ## Banners sociais e prévia de links
 
-Artes horizontais 1200×630 e 1200×627, mais uma composição quadrada 1080×1080, em `assets/social/`. Mestres e direção criativa em `creative/social/`. O head possui metadados Open Graph completos com imagem absoluta e cartão grande. A prévia continua privada; as redes precisam de página e imagem públicas para gerar cartões de links. Consulte `creative/social/README.md` para formatos, fontes e migração de URLs.
+Artes horizontais 1200×630 e 1200×627, mais uma composição quadrada 1080×1080, em `assets/social/`. Mestres e direção criativa em `creative/social/`. O head possui metadados Open Graph completos e cartão grande, apontando para `https://www.nexuscode.app.br/` e para `https://www.nexuscode.app.br/assets/social/nexuscode-share-v1.jpg`. A prévia continua privada; as redes precisam de página e imagem públicas para gerar cartões de links. Consulte `creative/social/README.md` para formatos, fontes e migração de URLs.
 
 ## Organização do projeto
 
@@ -55,3 +55,7 @@ Artes horizontais 1200×630 e 1200×627, mais uma composição quadrada 1080×10
 - `.openai/hosting.json` — configuração da hospedagem.
 
 O repositório Git também fica em `lp_nexuscode`; as pastas intermediárias `nexuscode/` e `dist/` deixaram de fazer parte da estrutura versionada da página.
+
+## Compartilhamento no domínio comercial
+
+Facebook, LinkedIn e WhatsApp podem usar o mesmo banner horizontal 1200×630 em `og:image`. O domínio escolhido é `https://www.nexuscode.app.br/`; a versão 1200×627 permanece disponível para anexação manual no LinkedIn. O compartilhamento automático requer publicar o `index.html` atualizado e `assets/social/nexuscode-share-v1.jpg` nessa hospedagem, sem autenticação. Nenhum dado precisa ser enviado a serviços de validação externos.
